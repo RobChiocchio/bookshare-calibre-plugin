@@ -5,12 +5,15 @@ __copyright__ = "2024, Rob Chiocchio <rmchiocchio@wpi.edu>"
 __docformat__ = "restructuredtext en"
 __version__ = (0, 1, 0)
 
+PLUGIN_NAME = "Bookshare"
+
 from calibre.customize import StoreBase
 
 from .bookshare import BookshareStore
 
+
 class BooksharePlugin(StoreBase):
-    name                = "Hello World Plugin" # Name of the plugin
+    name                = PLUGIN_NAME # Name of the plugin
     description         = "Set the publisher to Hello World for all new conversions"
     supported_platforms = ["windows", "osx", "linux"] # Platforms this plugin will run on
     author              = "Rob Chiocchio" # The author of this plugin
