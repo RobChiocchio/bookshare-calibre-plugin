@@ -2,7 +2,7 @@
 name = "bookshare-calibre-plugin"
 authors = [{name = "Rob Chiocchio", email = "rmchiocchio@wpi.edu"}]
 requires-python = ">=3.8"
-dynamic = ["version"]
+dynamic = ["version", "license"]
 
 [tool.poetry]
 package-mode = false

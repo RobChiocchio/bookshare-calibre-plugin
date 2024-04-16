@@ -4,10 +4,13 @@
 __license__   = "GPL v3"
 __copyright__ = "2024, Rob Chiocchio <rmchiocchio@wpi.edu>"
 __docformat__ = "restructuredtext en"
+__version__ = (0, 1, 0)
 
 import os
 
 from calibre.customize import FileTypePlugin
+
+USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko"
 
 
 class HelloWorld(FileTypePlugin):
@@ -16,10 +19,10 @@ class HelloWorld(FileTypePlugin):
     description         = "Set the publisher to Hello World for all new conversions"
     supported_platforms = ["windows", "osx", "linux"] # Platforms this plugin will run on
     author              = "Rob Chiocchio" # The author of this plugin
-    version             = (1, 0, 0)   # The version number of this plugin
-    file_types          = {"epub", "mobi"} # The file types that this plugin will be applied to
+    version             = __version__   # The version number of this plugin
+    file_types          = {"epub", "zip"} # The file types that this plugin will be applied to
     on_postprocess      = True # Run this plugin after conversion is complete
-    minimum_calibre_version = (0, 7, 53)
+    minimum_calibre_version = (5, 0, 0)
 
     def run(self, path_to_ebook):
         from calibre.ebooks.metadata.meta import get_metadata, set_metadata
