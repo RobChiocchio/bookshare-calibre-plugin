@@ -1,0 +1,40 @@
+[project]
+name = "bookshare-calibre-plugin"
+authors = [{name = "Rob Chiocchio", email = "rmchiocchio@wpi.edu"}]
+requires-python = ">=3.8"
+dynamic = ["version"]
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.7"
+pytest = "^8.1.1"
+
+[tool.ruff]
+line-length = 160
+indent-width = 4
+target-version = "py38"
+builtins = ["_"]
+
+[tool.ruff.lint]
+ignore = ["E402", "E722", "E401", "N999", "RUF012"]
+select = ["E", "F", "I", "N", "ASYNC", "S", "B", "A", "RUF"]
+
+[tool.ruff.format]
+quote-style = "double"
+skip-magic-trailing-comma = false
+
+[tool.ruff.lint.isort]
+detect-same-package = true
+known-first-party = ["calibre"]
+known-third-party = ["qt", "polyglot"]
+relative-imports-order = "closest-to-furthest"
+split-on-trailing-comma = false
+section-order = ["__python__", "future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.lint.isort.sections]
+"__python__" = ["__python__"]
