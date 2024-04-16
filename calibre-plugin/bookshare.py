@@ -1,16 +1,14 @@
+import mimetypes
+import urllib.parse
+from contextlib import closing
+
+from bs4 import BeautifulSoup
+
+#from calibre.utils.opensearch.query import Query
+from calibre import browser
 from calibre.gui2.store import StorePlugin
 from calibre.gui2.store.basic_config import BasicStoreConfig
 from calibre.gui2.store.search_result import SearchResult
-#from calibre.utils.opensearch.query import Query
-
-from calibre import browser
-
-import mimetypes
-
-from contextlib import closing
-
-import urllib.parse
-from bs4 import BeautifulSoup
 
 BASE_URL = "https://www.bookshare.org"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
