@@ -1,14 +1,14 @@
-import mimetypes
+#import mimetypes
 from contextlib import closing
 
 try:
-    from urllib.parse import urljoin, quote_plus
+    from urllib.parse import quote_plus, urljoin
 except ImportError:
-    from urllib2 import urljoin, quote_plus
+    from urllib2 import quote_plus, urljoin
+
+from http.cookiejar import LoadError, LWPCookieJar  #, MozillaCookieJar
 
 from bs4 import BeautifulSoup
-from http.cookiejar import LoadError, LWPCookieJar, MozillaCookieJar
-
 from PyQt5.Qt import QUrl
 
 #from calibre.utils.opensearch.query import Query
@@ -18,7 +18,7 @@ from calibre.gui2.store import StorePlugin
 from calibre.gui2.store.search_result import SearchResult
 from calibre.gui2.store.web_store_dialog import WebStoreDialog
 
-from .config import BookshareConfigWidget, BookshareStorePluginConfig, COOKIEJAR_PATH, CONFIG
+from .config import CONFIG, COOKIEJAR_PATH, BookshareStorePluginConfig
 
 BASE_URL = "https://www.bookshare.org"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"

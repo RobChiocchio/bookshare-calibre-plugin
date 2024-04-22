@@ -19,6 +19,7 @@ line-length = 160
 indent-width = 4
 target-version = "py38"
 builtins = ["_"]
+extend-exclude = ["calibre-plugin/*_ui.py"]
 
 [tool.ruff.lint]
 ignore = ["E402", "E722", "E401", "N999", "RUF012"]

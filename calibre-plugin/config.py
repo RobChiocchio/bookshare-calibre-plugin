@@ -1,13 +1,13 @@
 import os
 
-from . import PLUGIN_NAME
-from .config_widget_ui import Ui_Form
+from qt.core import QWidget
 
-from calibre.utils.config import JSONConfig
 from calibre.constants import config_dir as abs_config_dir
 from calibre.gui2.store.basic_config import BasicStoreConfig
+from calibre.utils.config import JSONConfig
 
-from qt.core import QWidget
+from . import PLUGIN_NAME
+from .config_widget_ui import Ui_Form
 
 CONFIG_DIR = os.path.join("plugins", "robchio")
 JSON_PATH = os.path.join(CONFIG_DIR, PLUGIN_NAME + ".json")
