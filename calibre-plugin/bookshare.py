@@ -15,11 +15,10 @@ from PyQt5.Qt import QUrl
 from calibre import browser
 from calibre.gui2 import open_url
 from calibre.gui2.store import StorePlugin
-from calibre.gui2.store.basic_config import BasicStoreConfig
 from calibre.gui2.store.search_result import SearchResult
 from calibre.gui2.store.web_store_dialog import WebStoreDialog
 
-from .config import BookshareConfig, BookshareStorePluginConfig, COOKIEJAR_PATH, CONFIG
+from .config import BookshareConfigWidget, BookshareStorePluginConfig, COOKIEJAR_PATH, CONFIG
 
 BASE_URL = "https://www.bookshare.org"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
@@ -38,9 +37,8 @@ def build_search_result(tr):
     s.isbn = tr.select("td")[2].text
     s.cover_url = tr.select_one("td[class='title']").select_one("img[class='cover-image-search']")["src"]
     s.detail_item = tr.select_one("td[class='title']").select("a")[-1]["href"]
-    s.drm = SearchResult.DRM_UNKNOWN
+    s.drm = SearchResult.DRM_UNLOCKED
     #s.formats = ["EPUB"]
-
 
     dl_cell = tr.select_one("td[class='downloadLinks']")
 
@@ -52,7 +50,7 @@ def build_search_result(tr):
     if len(raw_formats) > 0: # and title_id:
         print(title_id)
         for rf in raw_formats:
-            print(rf)
+            #print(rf)
             if rf.get("disabled", False):
                 continue
 
@@ -118,17 +116,7 @@ def is_logged_in(br):
     br.open(BASE_URL)
     return "Log out" in br.response().read().decode("utf-8")
 
-    def genesis(self):
-        """This method is called once per plugin, do initial setup here
-        """
-        self.name = "Bookshare"
-        self.logged_in = False
-        #self.config = BookshareConfig()
-        self.config = CONFIG
-        self.br = self.create_browser()
-
-        self.login()
-
+class BookshareStore(BookshareStorePluginConfig, StorePlugin):
     def search(self, query, max_results=25, timeout=60):
         for result in search_bookshare(query, max_results, timeout, self.br):
             yield result
@@ -151,8 +139,10 @@ def is_logged_in(br):
             self.logged_in = is_logged_in(self.br) # TODO: clean this up
             
             if self.logged_in:
+                self.br.add_password(BASE_URL, self.config.get("username"), self.config.get("password"))
                 self.br.cookiejar.save()
 
+        print("Logged in: ", self.logged_in)
         return self.logged_in
     
     def create_browser(self):
@@ -171,6 +161,16 @@ def is_logged_in(br):
             d.set_tags(self.config.get("tags", ""))
             d.exec_()
 
+    def genesis(self):
+        """This method is called once per plugin, do initial setup here
+        """
+        self.name = "Bookshare"
+        self.logged_in = False
+        #self.config = BookshareConfig()
+        self.config = CONFIG
+        self.br = self.create_browser()
+
+        self.login()
 
 if __name__ == "__main__":
     for book in search_bookshare("Harry Potter"):
