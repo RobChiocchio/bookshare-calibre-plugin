@@ -1,6 +1,10 @@
 import mimetypes
-import urllib.parse
 from contextlib import closing
+
+try:
+    from urllib.parse import urljoin, quote_plus
+except ImportError:
+    from urllib2 import urljoin, quote_plus
 
 from bs4 import BeautifulSoup
 from http.cookiejar import LoadError, LWPCookieJar, MozillaCookieJar
@@ -15,10 +19,12 @@ from calibre.gui2.store.basic_config import BasicStoreConfig
 from calibre.gui2.store.search_result import SearchResult
 from calibre.gui2.store.web_store_dialog import WebStoreDialog
 
-from .config import BookshareConfig
+from .config import BookshareConfig, BookshareStorePluginConfig, COOKIEJAR_PATH, CONFIG
 
 BASE_URL = "https://www.bookshare.org"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+
+ENABLE_DOWNLOADS = False # DEBUG: need to fix download links
 
 def build_search_result(tr):
     """Build a search result from a BeautifulSoup tag
@@ -43,8 +49,6 @@ def build_search_result(tr):
     raw_formats = dl_cell.select("form > select[class='downloadFormatSelector'] > option")
     raw_formats += dl_cell.select("form > select[class='downloadFormatSelector'] > optgroup > option")
 
-    print(raw_formats)
-
     if len(raw_formats) > 0: # and title_id:
         print(title_id)
         for rf in raw_formats:
@@ -52,16 +56,15 @@ def build_search_result(tr):
             if rf.get("disabled", False):
                 continue
 
-            download_url = urllib.parse.urljoin(BASE_URL, f"download/book?titleInstanceId={title_id}&downloadFormat={rf['value']}")
+            download_url = urljoin(BASE_URL, f"download/book?titleInstanceId={title_id}&downloadFormat={rf['value']}")
             #ext = mimetypes.guess_extension(rf['value']) if rf["value"] != "DAISY" else "ZIP"
             ext = rf['value'] if rf["value"] != "DAISY" else "ZIP"
             ext = "EPUB" if ext == "EPUB3" else ext # DEBUG: make a real mapping
-            print(ext)
-            print(download_url) # DEBUG: does not download file
             if ext and download_url:
                 #ext = ext[1:].upper().strip()
                 s.formats = ", ".join([ext, s.formats])
-                s.downloads[ext] = download_url
+                if ENABLE_DOWNLOADS: # DEBUG: does not download file, needs unique id
+                    s.downloads[ext] = download_url
         
     return s
 
@@ -73,7 +76,7 @@ def search_bookshare(query, max_results=25, timeout=60, br=None):
     :return: A list of dictionaries containing the search results
     """
     max_results = min(max_results, 100)
-    url = f"{BASE_URL}/search?limit={max_results}&keyword={urllib.parse.quote_plus(query)}"
+    url = f"{BASE_URL}/search?limit={max_results}&keyword={quote_plus(query)}"
 
     counter = max_results
     br = br or browser(user_agent=USER_AGENT)
@@ -101,9 +104,10 @@ def login(br, username, password):
     br["j_userName"] = username
     br["j_password"] = password
     #br["_spring_security_remember_me"] = "true"
-    # response = br.submit()
-    # if response.status_code != 200:
-    #     print("Login failed: ", response.status_code)
+    response = br.submit()
+    #if "Log out" not in response.read().decode("utf-8"):
+    if not is_logged_in(br):
+        print("Login failed: ", response.getcode())
     return br
 
 def is_logged_in(br):
@@ -114,13 +118,13 @@ def is_logged_in(br):
     br.open(BASE_URL)
     return "Log out" in br.response().read().decode("utf-8")
 
-class BookshareStore(BasicStoreConfig, StorePlugin):
     def genesis(self):
         """This method is called once per plugin, do initial setup here
         """
         self.name = "Bookshare"
         self.logged_in = False
-        self.config = BookshareConfig()
+        #self.config = BookshareConfig()
+        self.config = CONFIG
         self.br = self.create_browser()
 
         self.login()
@@ -135,7 +139,7 @@ class BookshareStore(BasicStoreConfig, StorePlugin):
             return True
         
         try:
-            self.br.cookiejar.load(self.config.cookiejar_path)
+            self.br.cookiejar.load(COOKIEJAR_PATH)
             self.logged_in = is_logged_in(self.br)
         except LoadError:
             pass
@@ -153,7 +157,7 @@ class BookshareStore(BasicStoreConfig, StorePlugin):
     
     def create_browser(self):
         br = browser(user_agent=USER_AGENT)
-        br.set_cookiejar(LWPCookieJar(self.config.cookiejar_path, delayload=True))
+        br.set_cookiejar(LWPCookieJar(COOKIEJAR_PATH, delayload=True))
         return br
     
     def open(self, parent=None, detail_item=None, external=False):

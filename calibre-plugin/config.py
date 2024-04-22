@@ -9,8 +9,16 @@ CONFIG_DIR = os.path.join("plugins", "robchio")
 JSON_PATH = os.path.join(CONFIG_DIR, PLUGIN_NAME + ".json")
 COOKIEJAR_PATH = os.path.join(abs_config_dir, CONFIG_DIR, PLUGIN_NAME + ".cookiejar")
 
+CONFIG = JSONConfig(JSON_PATH)
+
+CONFIG.defaults = {
+        "username": "partnerdemo@bookshare.org",
+        "password": "partner",
+    }
+
 class BookshareConfig(JSONConfig):
     def __init__(self):
+        raise NotImplementedError("Use the CONFIG object instead")
         super().__init__(JSON_PATH)
 
         self.defaults = {
@@ -18,4 +26,4 @@ class BookshareConfig(JSONConfig):
             "password": "partner",
         }
 
-        self.cookiejar_path = COOKIEJAR_PATH
+
