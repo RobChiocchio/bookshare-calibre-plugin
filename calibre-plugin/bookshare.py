@@ -97,8 +97,15 @@ def login(br, username, password):
     :param password: Bookshare password
     :return: A requests.Session object
     """
-    br.open(BASE_URL)
-    br.select_form(action="/login")
+    url = urljoin(BASE_URL, "/login")
+    br.open(url)
+    
+    try:
+        br.select_form(action=url)
+    except Exception as e:
+        print(e)
+        return br
+    
     br["j_userName"] = username
     br["j_password"] = password
     #br["_spring_security_remember_me"] = "true"
