@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/tmp/calibre-vyrv03wz/tmphfgj_baprobchio/calibre/gui2/config_widget.ui'
+# Form implementation generated from reading ui file '/tmp/calibre-1ya5xdpq/tmppy3wlwdfrobchio/calibre/gui2/config_widget.ui'
 #
 # Created by: PyQt6 UI code generator 6.10.0
 #
@@ -72,7 +72,7 @@ class Ui_Form(object):
         self.login_button.setObjectName("login_button")
         self.button_layout.addWidget(self.login_button)
         self.logout_button = QtWidgets.QPushButton(parent=Form)
-        self.logout_button.setEnabled(False)
+        self.logout_button.setEnabled(True)
         self.logout_button.setObjectName("logout_button")
         self.button_layout.addWidget(self.logout_button)
         self.gridLayout.addLayout(self.button_layout, 5, 1, 1, 1)
