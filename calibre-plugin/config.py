@@ -51,8 +51,9 @@ class BookshareConfigWidget(QWidget, Ui_Form):
         CONFIG.set("tags", self.tags.text())
 
     def load_settings(self):
-        self.username.setText(self.config.get("username", "")) # TODO: get username automatically when signed in with cookie
+        # self.username.setText(self.config.get("username", ""))
         #self.password.setText(self.config.get("password", ""))
+        # TODO: get username automatically when signed in with cookie
         self.password.setText("")
         self.cookie.setText(self.config.get("cookie", ""))
         #self.login_status.setText(self.plugin.logged_in) TODO: how do I do this?
