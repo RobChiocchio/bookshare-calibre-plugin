@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -u pipefail
 
 FLATPAK_ID="com.calibre_ebook.calibre"
 SRC_DIR="calibre-plugin/"
