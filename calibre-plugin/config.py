@@ -16,8 +16,9 @@ COOKIEJAR_PATH = os.path.join(abs_config_dir, CONFIG_DIR, PLUGIN_NAME + ".cookie
 CONFIG = JSONConfig(JSON_PATH)
 
 CONFIG.defaults = {
-        "username": "partnerdemo@bookshare.org",
-        "password": "partner",
+        "username": "",
+        "password": "",
+        "cookie": "",
         "open_external": False,
         "tags": "",
     }
@@ -50,6 +51,8 @@ class BookshareConfigWidget(QWidget, Ui_Form):
     def load_settings(self):
         self.username.setText(self.config.get("username", ""))
         self.password.setText(self.config.get("password", ""))
+        self.cookie.setText(self.config.get("cookie", ""))
+        #self.login_status.setText(self.plugin.logged_in) TODO: how do I do this?
         self.open_external.setChecked(self.config.get("open_external", False))
         self.tags.setText(self.config.get("tags", ""))
 
@@ -59,9 +62,3 @@ class BookshareStorePluginConfig(BasicStoreConfig):
     
     def config_widget(self):
         return BookshareConfigWidget(self)
-    
-    def save_settings(self, config_widget):
-        CONFIG.set("username", config_widget.username.text())
-        CONFIG.set("password", config_widget.password.text())
-        CONFIG.set("open_external", config_widget.open_external.isChecked())
-        CONFIG.set("tags", config_widget.tags.text())

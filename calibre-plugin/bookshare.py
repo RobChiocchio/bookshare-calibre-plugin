@@ -9,7 +9,11 @@ except ImportError:
 from http.cookiejar import LoadError, LWPCookieJar  #, MozillaCookieJar
 
 from bs4 import BeautifulSoup
-from PyQt5.Qt import QUrl
+
+try:
+    from PyQt6.Qt import QUrl # TODO: qtcore?
+except ImportError:
+    from PyQt5.Qt import QUrl
 
 #from calibre.utils.opensearch.query import Query
 from calibre import browser
@@ -22,6 +26,7 @@ from .config import CONFIG, COOKIEJAR_PATH, BookshareStorePluginConfig
 
 BASE_URL = "https://www.bookshare.org"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+COOKIE_NAME = "SESSbkslive"
 
 ENABLE_DOWNLOADS = False # DEBUG: need to fix download links
 
@@ -101,14 +106,15 @@ def login(br, username, password):
     br.open(url)
     
     try:
-        br.select_form(action=url)
+        br.select_form(nr=0)
     except Exception as e:
         print(e)
         return br
     
-    br["j_userName"] = username
-    br["j_password"] = password
-    #br["_spring_security_remember_me"] = "true"
+    br["userName"] = username
+    br["password"] = password
+    br["rememberMe"] = ["on"]
+
     response = br.submit()
     #if "Log out" not in response.read().decode("utf-8"):
     if not is_logged_in(br):
@@ -129,35 +135,50 @@ class BookshareStore(BookshareStorePluginConfig, StorePlugin):
             yield result
 
     def login(self):
+        self.br = getattr(self, "br", self.create_browser()) # create new browser if not set
+
         if (is_logged_in(self.br)):
             self.logged_in = True
             return True
         
         try:
             self.br.cookiejar.load(COOKIEJAR_PATH)
-            self.logged_in = is_logged_in(self.br)
-        except LoadError:
+        except LoadError: # TODO: I dont think this is the right exception. fix
             pass
         except Exception as e:
             print(e)
+
+        # If cookie is manually set in config, overwrite stored TODO: rewrite
+        new_cookie = self.config.get("cookie", None)
+        if new_cookie:
+            self.br.set_simple_cookie(COOKIE_NAME, new_cookie, ".bookshare.org", "/")
+
+        self.logged_in = is_logged_in(self.br)
 
         if not self.logged_in and self.config.get("username", None) and self.config.get("password", None):
             self.br = login(self.br, self.config.get("username"), self.config.get("password"))
             self.logged_in = is_logged_in(self.br) # TODO: clean this up
             
-            if self.logged_in:
-                self.br.add_password(BASE_URL, self.config.get("username"), self.config.get("password"))
-                self.br.cookiejar.save()
+        if self.logged_in:
+            #self.br.add_password(BASE_URL, self.config.get("username"), self.config.get("password"))
+            jar = self.br.cookiejar
+            for cookie in jar:
+                if cookie.name == COOKIE_NAME:
+                    self.config.set("cookie", cookie.value)
+                    break
+
+            #jar.save(filename=COOKIEJAR_PATH) TODO: fix
 
         print("Logged in: ", self.logged_in)
         return self.logged_in
     
     def create_browser(self):
         br = browser(user_agent=USER_AGENT)
-        br.set_cookiejar(LWPCookieJar(COOKIEJAR_PATH, delayload=True))
+        cookiejar = LWPCookieJar(COOKIEJAR_PATH, delayload=True)
+        br.set_cookiejar(cookiejar)
         return br
     
-    def open(self, parent=None, detail_item=None, external=False):
+    def open(self, gui=None, parent=None, detail_item=None, external=False):
         detail_url = detail_item if detail_item else BASE_URL
 
         if external or self.config.get("open_external", False):
@@ -173,9 +194,18 @@ class BookshareStore(BookshareStorePluginConfig, StorePlugin):
         """
         self.name = "Bookshare"
         self.logged_in = False
+        self.br = self.create_browser() # TODO: fix this not creating on time?
         #self.config = BookshareConfig()
         self.config = CONFIG
-        self.br = self.create_browser()
+
+        self.login()
+
+    def save_settings(self, config_widget):
+        self.config.set("username", config_widget.username.text())
+        self.config.set("password", config_widget.password.text())
+        self.config.set("cookie", config_widget.cookie.text().strip())
+        self.config.set("open_external", config_widget.open_external.isChecked())
+        self.config.set("tags", config_widget.tags.text())
 
         self.login()
 

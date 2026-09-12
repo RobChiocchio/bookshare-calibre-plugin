@@ -3,7 +3,7 @@
 __license__   = "GPL v3"
 __copyright__ = "2024, Rob Chiocchio <rmchiocchio@wpi.edu>"
 __docformat__ = "restructuredtext en"
-__version__ = (0, 1, 0)
+__version__ = (0, 1, 1)
 
 PLUGIN_NAME = "Bookshare"
 
@@ -19,10 +19,10 @@ class BooksharePlugin(StoreBase):
     author              = "Rob Chiocchio" # The author of this plugin
     version             = __version__   # The version number of this plugin
     file_types          = {"epub", "zip"} # The file types that this plugin will be applied to
-    on_import           = True # Run this plugin when a new book is imported
+    #on_import           = True # Run this plugin when a new book is imported
     #on_preprocess       = True # Run this plugin before conversion is started
-    on_postprocess      = True # Run this plugin after conversion is complete
-    minimum_calibre_version = (5, 0, 0)
+    #on_postprocess      = True # Run this plugin after conversion is complete
+    minimum_calibre_version = (6, 0, 0)
 
     def load_actual_plugin(self, gui):
         """This method must return the actual interface action plugin object.
