@@ -201,11 +201,7 @@ class BookshareStore(BookshareStorePluginConfig, StorePlugin):
         self.login()
 
     def save_settings(self, config_widget):
-        self.config.set("username", config_widget.username.text())
-        self.config.set("password", config_widget.password.text())
-        self.config.set("cookie", config_widget.cookie.text().strip())
-        self.config.set("open_external", config_widget.open_external.isChecked())
-        self.config.set("tags", config_widget.tags.text())
+        config_widget.save_settings()
 
         self.login()
 

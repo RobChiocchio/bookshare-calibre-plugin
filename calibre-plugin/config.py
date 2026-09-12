@@ -20,7 +20,7 @@ CONFIG.defaults = {
         "password": "",
         "cookie": "",
         "open_external": False,
-        "tags": "",
+        "tags": "Bookshare",
     }
 
 class BookshareConfig(JSONConfig):
@@ -43,14 +43,17 @@ class BookshareConfigWidget(QWidget, Ui_Form):
         self.config = CONFIG
         self.load_settings()
 
-    # def save_settings(self):
-    #     self.config.set("username", self.username.text())
-    #     self.config.set("password", self.password.text())
-    #     self.config.save()
+    def save_settings(self):
+        CONFIG.set("username", self.username.text())
+        CONFIG.set("password", self.password.text())
+        CONFIG.set("cookie", self.cookie.text().strip())
+        CONFIG.set("open_external", self.open_external.isChecked())
+        CONFIG.set("tags", self.tags.text())
 
     def load_settings(self):
-        self.username.setText(self.config.get("username", ""))
-        self.password.setText(self.config.get("password", ""))
+        self.username.setText(self.config.get("username", "")) # TODO: get username automatically when signed in with cookie
+        #self.password.setText(self.config.get("password", ""))
+        self.password.setText("")
         self.cookie.setText(self.config.get("cookie", ""))
         #self.login_status.setText(self.plugin.logged_in) TODO: how do I do this?
         self.open_external.setChecked(self.config.get("open_external", False))
