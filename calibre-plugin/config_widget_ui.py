@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/tmp/calibre-div_s4t1/tmpl36mubmtrobchio/calibre/gui2/config_widget.ui'
+# Form implementation generated from reading ui file '/tmp/calibre-5s_lusp0/tmpe3d8plr_robchio/calibre/gui2/config_widget.ui'
 #
 # Created by: PyQt6 UI code generator 6.10.0
 #
@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(460, 300)
+        Form.resize(460, 304)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -64,15 +64,30 @@ class Ui_Form(object):
         self.open_external = QtWidgets.QCheckBox(parent=Form)
         self.open_external.setObjectName("open_external")
         self.gridLayout.addWidget(self.open_external, 12, 0, 1, 2)
-        self.login_status = QtWidgets.QLabel(parent=Form)
-        self.login_status.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.login_status.setObjectName("login_status")
-        self.gridLayout.addWidget(self.login_status, 5, 1, 1, 1)
+        self.button_layout = QtWidgets.QHBoxLayout()
+        self.button_layout.setObjectName("button_layout")
         self.login_button = QtWidgets.QPushButton(parent=Form)
         self.login_button.setObjectName("login_button")
-        self.gridLayout.addWidget(self.login_button, 5, 0, 1, 1)
+        self.button_layout.addWidget(self.login_button)
+        self.logout_button = QtWidgets.QPushButton(parent=Form)
+        self.logout_button.setObjectName("logout_button")
+        self.button_layout.addWidget(self.logout_button)
+        self.gridLayout.addLayout(self.button_layout, 5, 1, 1, 1)
+        self.login_status = QtWidgets.QLabel(parent=Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.login_status.sizePolicy().hasHeightForWidth())
+        self.login_status.setSizePolicy(sizePolicy)
+        self.login_status.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.login_status.setObjectName("login_status")
+        self.gridLayout.addWidget(self.login_status, 5, 0, 1, 1)
 
         self.retranslateUi(Form)
+        self.login_button.clicked.connect(self.login_status.clear) # type: ignore
+        self.logout_button.clicked.connect(self.cookie.clear) # type: ignore
+        self.logout_button.clicked.connect(self.username.clear) # type: ignore
+        self.logout_button.clicked.connect(self.password.clear) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -83,5 +98,6 @@ class Ui_Form(object):
         self.username_label.setText(_("Username:"))
         self.tags_label.setText(_("Added tags:"))
         self.open_external.setText(_("Open store in external web browser"))
-        self.login_status.setText(_("Hello, world!"))
         self.login_button.setText(_("Log In"))
+        self.logout_button.setText(_("Log Out"))
+        self.login_status.setText(_("Hello, world!"))

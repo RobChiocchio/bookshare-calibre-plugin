@@ -19,7 +19,7 @@ CONFIG.defaults = {
         "username": "",
         "password": "",
         "cookie": "",
-        "open_external": False,
+        "open_external": True,
         "tags": "Bookshare",
     }
 
