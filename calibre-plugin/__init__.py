@@ -14,7 +14,7 @@ from .bookshare import BookshareStore
 
 class BooksharePlugin(StoreBase):
     name                = PLUGIN_NAME # Name of the plugin
-    description         = "Set the publisher to Hello World for all new conversions"
+    description         = "Get books from Bookshare"
     supported_platforms = ["windows", "osx", "linux"] # Platforms this plugin will run on
     author              = "Rob Chiocchio" # The author of this plugin
     version             = __version__   # The version number of this plugin
