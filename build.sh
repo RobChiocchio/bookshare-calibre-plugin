@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+# This script runs the build_ui.py script. TODO: build plugin after?
+
 CMD="calibre-debug"
 FLATPAK_ID="com.calibre_ebook.calibre"
 SCRIPT="./build_ui.py"
