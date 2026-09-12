@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/tmp/calibre-5s_lusp0/tmpe3d8plr_robchio/calibre/gui2/config_widget.ui'
+# Form implementation generated from reading ui file '/tmp/calibre-vyrv03wz/tmphfgj_baprobchio/calibre/gui2/config_widget.ui'
 #
 # Created by: PyQt6 UI code generator 6.10.0
 #
@@ -62,23 +62,28 @@ class Ui_Form(object):
         self.tags_label.setObjectName("tags_label")
         self.gridLayout.addWidget(self.tags_label, 14, 0, 1, 1)
         self.open_external = QtWidgets.QCheckBox(parent=Form)
+        self.open_external.setChecked(True)
         self.open_external.setObjectName("open_external")
         self.gridLayout.addWidget(self.open_external, 12, 0, 1, 2)
         self.button_layout = QtWidgets.QHBoxLayout()
         self.button_layout.setObjectName("button_layout")
         self.login_button = QtWidgets.QPushButton(parent=Form)
+        self.login_button.setEnabled(False)
         self.login_button.setObjectName("login_button")
         self.button_layout.addWidget(self.login_button)
         self.logout_button = QtWidgets.QPushButton(parent=Form)
+        self.logout_button.setEnabled(False)
         self.logout_button.setObjectName("logout_button")
         self.button_layout.addWidget(self.logout_button)
         self.gridLayout.addLayout(self.button_layout, 5, 1, 1, 1)
         self.login_status = QtWidgets.QLabel(parent=Form)
+        self.login_status.setEnabled(False)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.login_status.sizePolicy().hasHeightForWidth())
         self.login_status.setSizePolicy(sizePolicy)
+        self.login_status.setText("")
         self.login_status.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.login_status.setObjectName("login_status")
         self.gridLayout.addWidget(self.login_status, 5, 0, 1, 1)
@@ -100,4 +105,3 @@ class Ui_Form(object):
         self.open_external.setText(_("Open store in external web browser"))
         self.login_button.setText(_("Log In"))
         self.logout_button.setText(_("Log Out"))
-        self.login_status.setText(_("Hello, world!"))
