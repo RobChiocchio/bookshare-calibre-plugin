@@ -3,7 +3,7 @@
 __license__   = "GPL v3"
 __copyright__ = "2024, Rob Chiocchio <rmchiocchio@wpi.edu>"
 __docformat__ = "restructuredtext en"
-__version__ = (0, 1, 1)
+__version__ = (0, 1, 2)
 
 PLUGIN_NAME = "Bookshare"
 
