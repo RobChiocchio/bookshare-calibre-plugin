@@ -79,7 +79,7 @@ def search_bookshare(query, max_results=25, timeout=60, br=None):
     :return: A list of dictionaries containing the search results
     """
     max_results = min(max_results, 100)
-    url = f"{BASE_URL}/search?limit={max_results}&keyword={quote_plus(query)}"
+    url = f"{BASE_URL}/search?limit={max_results}&keyword={quote_plus(query)}&resultsView=TABLE"
 
     counter = max_results
     br = br or browser(user_agent=USER_AGENT)
