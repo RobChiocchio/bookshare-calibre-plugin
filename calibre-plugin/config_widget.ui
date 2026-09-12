@@ -61,7 +61,11 @@
     </widget>
    </item>
    <item row="14" column="1">
-    <widget class="QLineEdit" name="tags"/>
+    <widget class="QLineEdit" name="tags">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </item>
    <item row="9" column="0" colspan="2">
     <widget class="Line" name="separator_1">
@@ -78,7 +82,7 @@
     </widget>
    </item>
    <item row="14" column="0">
-    <widget class="QLabel" name="tabs_label">
+    <widget class="QLabel" name="tags_label">
      <property name="text">
       <string>Added tags:</string>
      </property>

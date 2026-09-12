@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/tmp/calibre-sjtzzrzs/tmpzacc0w0zrobchio/calibre/gui2/config_widget.ui'
+# Form implementation generated from reading ui file '/tmp/calibre-div_s4t1/tmpl36mubmtrobchio/calibre/gui2/config_widget.ui'
 #
 # Created by: PyQt6 UI code generator 6.10.0
 #
@@ -47,6 +47,7 @@ class Ui_Form(object):
         self.cookie_label.setObjectName("cookie_label")
         self.gridLayout.addWidget(self.cookie_label, 10, 0, 1, 1)
         self.tags = QtWidgets.QLineEdit(parent=Form)
+        self.tags.setText("")
         self.tags.setObjectName("tags")
         self.gridLayout.addWidget(self.tags, 14, 1, 1, 1)
         self.separator_1 = QtWidgets.QFrame(parent=Form)
@@ -57,9 +58,9 @@ class Ui_Form(object):
         self.username_label = QtWidgets.QLabel(parent=Form)
         self.username_label.setObjectName("username_label")
         self.gridLayout.addWidget(self.username_label, 2, 0, 1, 1)
-        self.tabs_label = QtWidgets.QLabel(parent=Form)
-        self.tabs_label.setObjectName("tabs_label")
-        self.gridLayout.addWidget(self.tabs_label, 14, 0, 1, 1)
+        self.tags_label = QtWidgets.QLabel(parent=Form)
+        self.tags_label.setObjectName("tags_label")
+        self.gridLayout.addWidget(self.tags_label, 14, 0, 1, 1)
         self.open_external = QtWidgets.QCheckBox(parent=Form)
         self.open_external.setObjectName("open_external")
         self.gridLayout.addWidget(self.open_external, 12, 0, 1, 2)
@@ -80,7 +81,7 @@ class Ui_Form(object):
         self.password_label.setText(_("Password:"))
         self.cookie_label.setText(_("Auth Cookie:"))
         self.username_label.setText(_("Username:"))
-        self.tabs_label.setText(_("Added tags:"))
+        self.tags_label.setText(_("Added tags:"))
         self.open_external.setText(_("Open store in external web browser"))
         self.login_status.setText(_("Hello, world!"))
         self.login_button.setText(_("Log In"))
